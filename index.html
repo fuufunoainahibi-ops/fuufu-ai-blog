@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夫婦でためす、AIな日々</title>
+<style>
+  :root {
+    --primary: #6366f1;
+    --primary-light: #a5b4fc;
+    --accent: #22d3ee;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --bg: #fafbff;
+    --bg-card: #ffffff;
+    --border: #e5e7eb;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .header-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+  }
+
+  nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  nav a:hover {
+    color: var(--primary);
+  }
+
+  /* Hero */
+  .hero {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--text-light);
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .hero-tags {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    font-size: 0.8rem;
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.08);
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+
+  /* Main */
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2rem 2rem 5rem;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding-left: 0.8rem;
+    border-left: 4px solid var(--primary);
+  }
+
+  /* Posts grid */
+  .posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .post-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -10px rgba(99, 102, 241, 0.25);
+  }
+
+  .post-thumb {
+    height: 160px;
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 300;
+  }
+
+  .post-thumb.variant-1 {
+    background: linear-gradient(135deg, #818cf8, #22d3ee);
+  }
+
+  .post-thumb.variant-2 {
+    background: linear-gradient(135deg, #f472b6, #818cf8);
+  }
+
+  .post-thumb.variant-3 {
+    background: linear-gradient(135deg, #60a5fa, #34d399);
+  }
+
+  .post-thumb.variant-4 {
+    background: linear-gradient(135deg, #fbbf24, #f472b6);
+  }
+
+  .post-thumb.variant-5 {
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  }
+
+  .post-thumb.variant-6 {
+    background: linear-gradient(135deg, #34d399, #22d3ee);
+  }
+
+  .post-body {
+    padding: 1.3rem 1.4rem 1.5rem;
+  }
+
+  .post-meta {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 0.6rem;
+  }
+
+  .post-category {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .post-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .post-excerpt {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.85rem;
+  }
+
+  footer p {
+    margin-bottom: 0.4rem;
+  }
+
+  @media (max-width: 640px) {
+    nav ul {
+      gap: 1rem;
+    }
+
+    nav a {
+      font-size: 0.85rem;
+    }
+
+    .hero {
+      padding: 3rem 1.5rem 2rem;
+    }
+
+    main {
+      padding: 1rem 1.5rem 3rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">AI</div>
+      <span>夫婦でためす、AIな日々</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">ホーム</a></li>
+        <li><a href="#">記事一覧</a></li>
+        <li><a href="#">プロフィール</a></li>
+        <li><a href="#">お問い合わせ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>夫婦でためす、AIな日々</h1>
+  <p>最新のAIツールを夫婦ふたりで実際に使ってみた、素直な感想と気づきを綴るブログ。仕事から家事、趣味まで、暮らしに寄り添うAIの活用術をゆるやかにお届けします。</p>
+  <div class="hero-tags">
+    <span class="tag">#AI活用</span>
+    <span class="tag">#夫婦の記録</span>
+    <span class="tag">#くらし</span>
+    <span class="tag">#レビュー</span>
+  </div>
+</section>
+
+<main>
+  <h2 class="section-title">最新の記事</h2>
+
+  <div class="posts">
+
+    <article class="post-card">
+      <div class="post-thumb variant-1">◯</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="post-category">AIツール</span>
+          <span>2026.04.15</span>
+        </div>
+        <h3 class="post-title">Claudeで夫婦の家計簿を整理してみた話</h3>
+        <p class="post-excerpt">ずっと溜まっていたレシートの山。AIに頼ったら、一気に片付いた週末のレポートです。</p>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <div class="post-thumb variant-2">△</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="post-category">くらし</span>
+          <span>2026.04.10</span>
+        </div>
+        <h3 class="post-title">AIに今週の献立を考えてもらったら、意外と続いた</h3>
+        <p class="post-excerpt">毎日の「今日なに食べる？」問題。AIに任せてみたら、食卓に小さな変化が生まれました。</p>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <div class="post-thumb variant-3">□</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="post-category">レビュー</span>
+          <span>2026.04.05</span>
+        </div>
+        <h3 class="post-title">画像生成AIで夫婦の記念日カードを作る</h3>
+        <p class="post-excerpt">手書きが苦手なふたりでも、オリジナルのカードが作れる時代に。ツール比較と実例を紹介します。</p>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <div class="post-thumb variant-4">◇</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="post-category">仕事</span>
+          <span>2026.03.28</span>
+        </div>
+        <h3 class="post-title">在宅ワークの相棒、AI議事録まとめ術</h3>
+        <p class="post-excerpt">Web会議のあとに待っている議事録作業。AIを使い始めてから、週末が少し自由になりました。</p>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <div class="post-thumb variant-5">☆</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="post-category">趣味</span>
+          <span>2026.03.20</span>
+        </div>
+        <h3 class="post-title">AIと一緒に、旅のしおりを作ってみた</h3>
+        <p class="post-excerpt">京都への二泊三日。プランニングをAIと相談したら、思わぬ名所にも出会えました。</p>
+      </div>
+    </article>
+
+    <article class="post-card">
+      <div class="post-thumb variant-6">◎</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="post-category">学び</span>
+          <span>2026.03.15</span>
+        </div>
+        <h3 class="post-title">夫婦ではじめる、やさしいプロンプト入門</h3>
+        <p class="post-excerpt">「AIへのお願いのしかた」を、夫婦で学んでみる。つまずいたポイントと、コツをまとめました。</p>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 夫婦でためす、AIな日々</p>
+  <p>AIとゆるやかに暮らす、ふたりの記録。</p>
+</footer>
+
+</body>
+</html>
